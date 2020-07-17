@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using CmdApi.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace CmdApi.Controllers
 {
@@ -43,6 +45,21 @@ namespace CmdApi.Controllers
             _context.SaveChanges();
 
             return CreatedAtAction("GetCommandItem", new Command { Id = command.Id }, command);
+        }
+
+        //Put: api/commands/{id}
+        [HttpPut("{id}")]
+        public ActionResult PutCommandItem(int id, Command command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(command).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return NoContent();
         }
     }
 }
